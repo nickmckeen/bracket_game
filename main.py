@@ -9,24 +9,48 @@ needs
 3. A secondary buffer to grab target characters positions
 4. kill logic to delete character from buffer
 '''
+#imports
+import time, random, sys
+
 #setting up config variables to change game play options
 
-blank = '-'
 
+def draw_buffer(screen_buffer):
+    for count,character in enumerate(screen_buffer):
+        sys.stdout.write(screen_buffer[count])
+        sys.stdout.flush()
+        if count%50 == 49:
+            print("\n")
+    return 0
 
 def main():
+    #basic game settings
+    blank = '-'
+    bracket_characters="(){}[]#_,=+/%"
+    game_speed = 10
+    player_lives = 1
+    
     #setting up our screen buffer
     #we will use a 500 character array
     #to give us a 10hx50w psuedo screen
     #we also set up a blank space character so we
-
-    sb =  [blank for i in range(500)]
-    
-    for count,character in enumerate(sb):
-        print(sb[count],end="")
-        if count%50 == 49:
-            print("\n")
-    
+    screen_buffer =  [blank for i in range(500)]
+    game_ticker=0
+    while player_lives > 0:
+        game_ticker+=1
+        time.sleep(0.1)
+                
+        #print(screen_buffer.pop(),end='',flush=True)
+        if game_ticker % game_speed == 0:
+            #print(random.choice(bracket_characters),end="")
+            screen_buffer.append(random.choice(bracket_characters))
+        else: 
+            screen_buffer.append(blank)
+        draw_buffer(screen_buffer)
+        if game_ticker % 50 ==0:
+            print(":", end="\n")
+        if game_ticker > 300:
+            player_lives=player_lives-1
     return 0
 
 if __name__ == "__main__":
